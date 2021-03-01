@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import '../../build/style.css';
+
+import NavBar from './NavBar';
+import Main from './Main';
 
 function App() {
-	return <div>Hello, world!</div>
+	return (
+    <>
+      <NavBar />
+      <Main />
+    </>
+  );
 }
 
 export default App;
