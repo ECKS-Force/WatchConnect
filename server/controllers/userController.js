@@ -3,10 +3,8 @@ const db = require('../models/databaseModel.js');
 const userController = {};
 
 userController.addUser = (req, res, next) => {
-  // add this user to the database. We want to get their user id.
   const { username, password } = req.body;
 
-  // query for the _id on users table that matches the received name and password
   const query = 'INSERT INTO users (username, password) VALUES ($1, $2)';
   const values = [username, password];
 
@@ -60,10 +58,8 @@ userController.checkPassword = (req, res, next) => {
 };
 
 // userController.findUserID = (req, res, next) => {
-//   // add this user to the database. We want to get their user id.
 //   const { username } = req.body;
 
-//   // query for the _id on users table that matches the received name and password
 //   const query = 'SELECT _id FROM users WHERE username = $1';
 //   const values = [username];
 
