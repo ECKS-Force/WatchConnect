@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ECKS-Force/WatchConnect#readme",
   "dependencies": {
     "concurrently": "^6.0.0",
+    "cookie-parser": "^1.4.5",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "pg": "^8.5.1",
