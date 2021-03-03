@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Friends from './Friends';
-import WatchList from './WatchLIst';
+import FriendsList from './FriendsList';
+import WatchList from './WatchList';
 import Feed from './Feed';
 
 const Main = () => {
-  return <div></div>;
+  return <FriendsList/>;
 };
 
 export default Main;
