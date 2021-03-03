@@ -15,7 +15,7 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, '../client/static')));
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-//app.use('/app', appRouter);
+app.use('/app', appRouter);
 
 app.use('/auth', authRouter);
 

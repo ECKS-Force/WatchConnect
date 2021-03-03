@@ -8,7 +8,7 @@ cookieController.setCookies = (req, res, next) => {
 
 cookieController.deleteCookies = (req, res, next) => {
   //   res.cookie('session', false, { maxAge: 0 });
-  //   res.cookie('userID', req.cookies.username, { maxAge: 0 }, { httpOnly: true });
+  //   res.cookie('username', req.cookies.username, { maxAge: 0 }, { httpOnly: true });
   res.clearCookie('session');
   res.clearCookie('username');
   return next();
