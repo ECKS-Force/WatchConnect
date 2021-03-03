@@ -90,7 +90,7 @@ const FriendsList = ({ friends, setFriends }) => {
     //   body: JSON.stringify(removeList)
     // }).then((res) => res.json())
     //   .then((data) => {
-    //     setFriends([...friends, data]);
+    //     setFriends([...data]);
     //   })
 
   }
