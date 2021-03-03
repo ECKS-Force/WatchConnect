@@ -1,26 +1,15 @@
 import React from 'react';
 
 const Friend = (props) => {
-  //logic for button
-  // const removeFriend = id =>{
-  //   fetch('/friends', {
-  //     method: 'DELETE',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(id)//is this right...?
-  //   }).then((res) => res.json())
-  //     .then((data) => {
-  //       console.log('confirmation: ', data);
-  //   }).catch((error) => console.log('ERROR deleting friends: ', error));
-  // }
   
-  console.log('these are the props: ', props);
+  const imgAlt = `${props.watching} movie poster`;
 
   return(
     <div> 
       <label>
         {props.username} is watching {props.watching}
+        <img src={props.watchingImgSrc}
+        alt={imgAlt}/>
         <input 
           type='checkbox'
           id={props.username}
@@ -30,7 +19,5 @@ const Friend = (props) => {
     </div>
   )
 };
-
-//onClick={removeFriend(props.userID)}
 
 export default Friend;

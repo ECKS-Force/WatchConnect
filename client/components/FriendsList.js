@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Friend from './Friend';
 
 const testRes1 = [
   {
     username:'KellyP',
-    watching:'CSI'
+    watching:'Halt and Catch Fire',
+    watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/l4qvJ0lq59wR3ODX42DxBVFGoxx.jpg'
   },
   {
     username:'Ruby',
-    watching:'Muppet Babies'
+    watching:'Muppet Babies',
+    watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/oJc14qy42hABKKWlQwEguFdeTdU.jpg'
   }
 ]
 
 const testRes2 = {
-  username:'Shelby',
-  watching:'test1'
+  username:'BreakerBeam',
+  watching:'Dirty Dancing',
+  watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/dvEggyDTTIBDvrUNjTEa9depT0f.jpg'
 }
 
-const FriendsList = () => {
-  const [friends, setFriends] = useState([]);
-  const [textState, setText] = useState({value:''});
-
+const FriendsList = ({ friends, setFriends }) => {
+  
   useEffect(() => {
     //Req current user's friends from db & use res to set state
     //Iterate thru res & save each
@@ -41,54 +42,13 @@ const FriendsList = () => {
         <li>
           <Friend 
             username={friend.username}
-            watching={friend.watching}//is watching a separate request?
+            watching={friend.watching}
+            watchingImgSrc={friend.watchingImgSrc}
           />
         </li>   
       );
     });    
   };
-
-  const submitFriend = (e) =>{
-    e.preventDefault(); //prevents page refresh
-
-    const userToAdd = textState.value //save text value for use in fetch request
-    setText({value: ''}); //then reset text state to clear text field
-
-    //check if a friend is already listed
-    let friendListed = false;
-    friends.forEach((friend) => {
-      if(friend.username.toLowerCase() === textState.value.toLowerCase()){
-        friendListed = true;
-      }
-    })
-
-    if(friendListed){
-      window.alert('this friend is already in your list');
-    } else{
-       //send fetch request to db to get info for user entered in text field
-      //fetch('/friends', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({username: userToAdd})
-      // }).then((res) => res.json())
-      //   .then((data) => {
-      //      if(!data){
-      //        window.alert('user not found');
-      //      } else{
-      //        setFriends([...friends, data]);
-      //      }
-      //   })
-
-      //add friend to state
-      setFriends([...friends, testRes2]);
-    }
-  }
-
-  const updateTextState = (e) =>{
-    setText({value: e.target.value});
-  }
 
   //for each box that is checked, delete entry in followers table
   //then update state to trigger list rerender
@@ -141,17 +101,6 @@ const FriendsList = () => {
       Friends List
       </h1>
       <div>
-        <form onSubmit={submitFriend}>
-          <input
-            className='textField'
-            type='text'
-            value={textState.value}
-            placeholder='Enter a username'
-            onChange={updateTextState}/>
-          <input
-            type='submit'
-            value='Add a Friend'/>
-        </form>     
       </div>
       <form onSubmit={unFollow}>
         <ul>
@@ -161,9 +110,11 @@ const FriendsList = () => {
         type='submit'
         value='Unfollow'/>
       </form>
-      
     </div>    
   )
 };
 
-export default FriendsList;
+export default FriendsList
+        
+        
+       
