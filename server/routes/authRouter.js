@@ -4,10 +4,12 @@ const { setCookies, deleteCookies } = require('../controllers/cookieController.j
 
 const authRouter = express.Router();
 
+// input: body {username, password}
 authRouter.post('/signup', addUser, setCookies, (req, res) => {
   return res.sendStatus(200);
 });
 
+// input: body {username, password}
 authRouter.post('/signin', checkPassword, setCookies, (req, res) => {
   return res.sendStatus(200);
 });
