@@ -45,21 +45,21 @@ function App() {
     }
   };
 
-  if (!loggedIn) {
-    return (
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <div>Sign up</div>
-        </Route>
-        {/* <Route path="/">
-          <Redirect to="/login" />
-        </Route> */}
-      </Switch>
-    );
-  } else {
+  // if (!loggedIn) {
+  //   return (
+  //     <Switch>
+  //       <Route path="/login">
+  //         <Login />
+  //       </Route>
+  //       <Route path="/signup">
+  //         <div>Sign up</div>
+  //       </Route>
+  //       {/* <Route path="/">
+  //         <Redirect to="/login" />
+  //       </Route> */}
+  //     </Switch>
+  //   );
+  // } else {
     return (
       <>
         {showModal &&
@@ -84,7 +84,7 @@ function App() {
         </main>
       </>
     );
-  }
+  // }
 }
 
 export default App;
