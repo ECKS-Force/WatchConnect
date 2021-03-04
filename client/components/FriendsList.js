@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
 import Friend from './Friend';
 
+document.cookie ='username=judy';
+
 const testRes1 = [
   {
-    username:'KellyP',
+    publisher:'KellyP',
     watching:'Halt and Catch Fire',
     watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/l4qvJ0lq59wR3ODX42DxBVFGoxx.jpg'
   },
   {
-    username:'Ruby',
+    publisher:'Ruby',
     watching:'Muppet Babies',
     watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/oJc14qy42hABKKWlQwEguFdeTdU.jpg'
   }
 ]
 
 const testRes2 = {
-  username:'BreakerBeam',
+  publisher:'BreakerBeam',
   watching:'Dirty Dancing',
   watchingImgSrc:'https://www.themoviedb.org/t/p/w220_and_h330_face/dvEggyDTTIBDvrUNjTEa9depT0f.jpg'
 }
@@ -25,14 +27,12 @@ const FriendsList = ({ friends, setFriends }) => {
   useEffect(() => {
     //Req current user's friends from db & use res to set state
     //Iterate thru res & save each
-    // fetch('/friends')
-    //  .then((res) => res.json())
-    //  .then((data) => {
-    //     console.log('friends list: ', data);
-    //     setFriends(data);
-    //   }).catch((error) => console.log('ERROR retrieving Friends List: ', error));
-
-    setFriends(testRes1);//this represents response from API call
+    fetch('/app/friendsList')
+     .then((res) => res.json())
+     .then((data) => {
+        console.log('friends list: ', data);
+        setFriends(data);
+      }).catch((error) => console.log('ERROR retrieving Friends List: ', error));
   }, []);
 
   //create a Friend component for each friend in state 
@@ -41,7 +41,7 @@ const FriendsList = ({ friends, setFriends }) => {
       return (
         <li>
           <Friend 
-            username={friend.username}
+            publisher={friend.publisher}
             watching={friend.watching}
             watchingImgSrc={friend.watchingImgSrc}
           />
@@ -62,36 +62,37 @@ const FriendsList = ({ friends, setFriends }) => {
     
     for (let box of checkboxes){
       if(box.checked){
-        console.log('this box is checked: ', box);
         removeList[box.id] = true;
       }
     }
 
     //update state to only show unchecked friends
     let friendsCopy = [...friends];
-    console.log('friends copy before splice: ', friendsCopy);
     
     friendsCopy.forEach((friend, i) => {
-      if (removeList[friend.username]){
-        console.log('unfollow this friend: ', friend.username);
+      if (removeList[friend.publisher]){
         friendsCopy.splice(i, 1);
       }
-    })
-
-    console.log('friends copy after splice: ', friendsCopy);
+    });
+    
     setFriends([...friendsCopy]);
 
     //send req with list of friends to remove & use res to update state
-    //fetch('/friends', {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(removeList)
-    // }).then((res) => res.json())
-    //   .then((data) => {
-    //     setFriends([...data]);
-    //   })
+    for(let publisher in removeList){
+      
+      let unfollowUser = {friend: publisher};
+
+      fetch('/app/unfollow', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(unfollowUser)
+      }).then((res) => res.json())
+        .then((data) => {
+          setFriends([...data]);
+        })
+    }
 
   }
 
