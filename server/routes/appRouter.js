@@ -27,9 +27,12 @@ appRouter.get('/friendSearch/:search', friendSearch, (req, res) => {
   return res.status(200).json(res.locals.search);
 });
 
-appRouter.get('/content', getContentList, (req, res) => {
+// input: body {username:<username>}
+// output: [ { username, contentID, mediaType, watching, dateUpdated, rating, review }, ... ]
+appRouter.post('/content', getContentList, (req, res) => {
   return res.status(200).json(res.locals.watchList);
 });
+
 // input: params, search = <media name>
 // output: [ { id: <mediaID>, name: <media name>, mediaType: <tv or movie>, imgPath: <path end>, description: <text> }, {}, ...]
 appRouter.get('/showSearch/:search', showSearch, (req, res) => {
