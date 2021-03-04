@@ -39,7 +39,7 @@ appRouter.get('/showInfo/:type/:id', showInfo, (req, res) => {
   return res.status(200).json(res.locals.info);
 })
 
-// input: body { id:<mediaID>, media:<tv or movie>, watching:<current watching, watchlist, watched>}
+// input: body { id:<mediaID>, media:<tv or movie>, watching:<currently watching, watchlist, watched>}
 appRouter.post('/addMedia', addMedia, (req, res) => {
   return res.sendStatus(200);
 })
