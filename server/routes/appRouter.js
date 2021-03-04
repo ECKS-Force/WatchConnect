@@ -1,6 +1,6 @@
 const express = require('express');
 const { getFriendsList, addFriend, deleteFriend, friendSearch } = require('../controllers/followerController.js');
-
+const { getContentList } = require('../controllers/contentController');
 const appRouter = express.Router();
 
 appRouter.get('/friendsList', getFriendsList, (req, res) => {
@@ -19,4 +19,5 @@ appRouter.get('/friendSearch/:search', friendSearch, (req, res) => {
   return res.status(200).json(res.locals.search);
 });
 
+appRouter.get('/content', )
 module.exports = appRouter;
