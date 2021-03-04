@@ -46,7 +46,23 @@ const RatingModal = ({ show, closeModal }) => {
       return;
     }
 
-    alert('Submit rating!');
+    // add show to watched
+    console.log('sending post');
+    fetch('/app/addMedia', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id,
+        media: 'tv',
+        watching: 'watched'
+      })
+    })
+      .then(res => {
+        console.log('show added');
+      });
+
     closeModal();
   };
 

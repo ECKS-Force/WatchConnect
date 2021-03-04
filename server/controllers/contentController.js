@@ -3,18 +3,18 @@ const db = require('../models/databaseModel');
 const contentController = {};
 
 contentController.getContentList = (req, res, next) => {
-  const query = 'SELECT contentID, mediaType FROM contentList'
+  const query = 'SELECT contentID, mediaType FROM contentLists'
     +' WHERE username = $1';
-  const values = [req.body.username];
+  const values = [req.cookies.username];
 
   db.query(query, values)
   .then((result) => {
-    console.log('getContentList db query result: ', result)
+    console.log('getContentLists db query result: ', result)
     res.locals.watchList = result.rows;
     return next();
   })
   .catch((error) => {
-    console.log('getContentList ERROR: ', error);
+    console.log('getContentLists ERROR: ', error);
     return next(error);
   })
 }

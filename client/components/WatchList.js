@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
 // dummy data
 // https://www.themoviedb.org/t/p/w220_and_h330_face/azL2ThbJMIkts3ZMt3j1YgBUeDB.jpg
@@ -59,6 +59,14 @@ const shows = {
 };
 
 const WatchList = ({ openModal }) => {
+  useEffect(() => {
+    fetch('/app/content')
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+      });
+  }, []);
+
   const renderWatching = (showArr) => {
     return showArr.map(show => <ShowIcon show={show} />);
   };
