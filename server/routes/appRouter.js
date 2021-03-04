@@ -1,7 +1,7 @@
 const express = require('express');
 const { getFriendsList, addFriend, deleteFriend, friendSearch } = require('../controllers/followerController.js');
+const { getContentList, addMedia, deleteMedia, updateMedia } = require('../controllers/contentController.js');
 const { showSearch, showInfo } = require('../controllers/apiController.js')
-const { addMedia, deleteMedia, updateMedia } = require('../controllers/contentController.js')
 
 const appRouter = express.Router();
 
@@ -27,6 +27,9 @@ appRouter.get('/friendSearch/:search', friendSearch, (req, res) => {
   return res.status(200).json(res.locals.search);
 });
 
+appRouter.get('/content', getContentList, (req, res) => {
+  return res.status(200).json(res.locals.watchList);
+});
 // input: params, search = <media name>
 // output: [ { id: <mediaID>, name: <media name>, mediaType: <tv or movie>, imgPath: <path end>, description: <text> }, {}, ...]
 appRouter.get('/showSearch/:search', showSearch, (req, res) => {
