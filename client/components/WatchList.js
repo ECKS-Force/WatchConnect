@@ -63,7 +63,11 @@ const WatchList = ({ openModal }) => {
   const [queued, setQueued] = useState([]);
 
   useEffect(() => {
-    fetch('/app/content', {
+    refreshList();
+  }, []);
+
+  const refreshList = () => {
+    fetch('/app/getExtMedia', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -71,6 +75,7 @@ const WatchList = ({ openModal }) => {
     })
       .then(res => res.json())
       .then(shows => {
+        console.log(shows);
         const watchingArr = [];
         const queuedArr = [];
 
@@ -78,58 +83,85 @@ const WatchList = ({ openModal }) => {
           if (show.watching === 'watching') {
             watchingArr.push(show);
           } else if (show.watching === 'queued') {
-            const fetchPromise = fetch('/content')
-            queuedArr.push(fetchPromise);
+            queuedArr.push(show);
           }
         });
 
-        Promise.all(queuedArr).then((values) => {
-          console.log('done');
-        });
-        // set state here
+        setWatching(watchingArr);
+        setQueued(queuedArr);
       });
-  }, []);
-
-  const renderWatching = (showArr, watching) => {
-    return showArr.map(show => <ShowIcon show={show} watching={watching} openModal={openModal} />);
   };
 
-  return (
-    <>
-      <section className="watching">
-        <div className="watch-list-header">
-          <h2>Currently Watching</h2>
-        </div>
-        <div className="show-container">
-          {renderWatching(shows.watching, 'watching')}
-        </div>
-      </section>
-      <section className="queue">
-        <div className="watch-list-header">
-          <h2>My Queue</h2>
-        </div>
-        <div className="show-container">
-          {renderWatching(shows.upNext, 'queued')}
-        </div>
-      </section>
-    </>
-  );
+  const renderPosters = (showArr, watching) => {
+    return showArr.map(show => <ShowIcon
+      show={show}
+      watching={watching}
+      openModal={openModal}
+      refreshList={refreshList}
+    />);
+  };
+
+  if (watching && queued) {
+    return (
+      <>
+        <section className="watching">
+          <div className="watch-list-header">
+            <h2>Currently Watching</h2>
+          </div>
+          <div className="show-container">
+            {renderPosters(watching, 'watching')}
+          </div>
+        </section>
+        <section className="queue">
+          <div className="watch-list-header">
+            <h2>My Queue</h2>
+          </div>
+          <div className="show-container">
+            {renderPosters(queued, 'queued')}
+          </div>
+        </section>
+      </>
+    );
+  } else {
+    <div>Loading...</div>;
+  }
 };
 
-const ShowIcon = ({ show, watching, openModal }) => {
+const ShowIcon = ({ show, watching, openModal, refreshList }) => {
   const markWatched = () => {
-    openModal({
-      type: 'RATING',
-      show: {
-        contentid
-      }
-    });
+    openModal({ type: 'RATING', show });
+  };
+
+  const toggleWatching = (e) => {
+    let newStatus;
+    if (show.watching === 'watching') {
+      newStatus = 'queued';
+    } else {
+      newStatus = 'watching';
+    }
+
+    fetch('/app/updateMedia', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: show.id,
+        update: 'watching',
+        value: newStatus
+      })
+    })
+      .then(() => {
+        refreshList();
+      });
   };
 
   return (
-    <div className="show-icon">
+    <div
+      className="show-icon"
+    >
       <a href={`/shows/${show.id}`}>
-        <img src={show.poster_path} />
+        <img src={`https://www.themoviedb.org/t/p/original${show.poster_path}`} />
       </a>
       {watching === 'watching' ?
         <div className="show-button-container">
@@ -137,12 +169,21 @@ const ShowIcon = ({ show, watching, openModal }) => {
             src="https://img.icons8.com/windows/32/ffffff/--checkmark-yes.png"
             onClick={markWatched}
           />
-          <img src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-down.png"/>
+          <img
+            src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-down.png"
+            onClick={toggleWatching}
+          />
         </div>
         :
         <div className="show-button-container">
-          <img src="https://img.icons8.com/windows/32/ffffff/--checkmark-yes.png"/>
-          <img src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-up.png"/>
+          <img
+            src="https://img.icons8.com/windows/32/ffffff/--checkmark-yes.png"
+            onClick={markWatched}
+          />
+          <img
+            src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-up.png"
+            onClick={toggleWatching}
+          />
         </div>
       }
     </div>

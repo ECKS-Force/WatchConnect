@@ -109,7 +109,8 @@ main {
 }
 
 .show-icon:hover .show-button-container {
-  display: inherit;
+  display: flex;
+  flex-direction: row;
 }
 
 .show-icon img {
@@ -121,7 +122,13 @@ main {
   width: inherit;
   display: none;
   position: absolute;
+  margin: 0 auto;
   bottom: 0;
+  cursor: pointer;
+}
+
+.show-icon:hover > a > img {
+  filter: brightness(0.3);
 }
 
 .modal-container {
