@@ -4,19 +4,19 @@ import { useParams } from 'react-router-dom';
 // dummy data
 const dummyReviews = [
   {
-    username: 'kingofthenorth',
+    username: 'codesmithbro',
     rating: 3,
-    text: 'It\'s okay, but I know nothing.'
+    text: 'Not my cup of tea.'
   },
   {
-    username: 'kingslayer',
-    rating: 2,
-    text: 'Too much incest.'
+    username: 'anotherperson1234',
+    rating: 5,
+    text: 'Best show ever!'
   },
   {
-    username: 'whitewalker',
+    username: 'i_love_tv',
     rating: 1,
-    text: 'Winterfell is cold.'
+    text: 'Worst show ever.'
   }
 ];
 
@@ -30,17 +30,6 @@ const ShowPage = ({ openModal }) => {
   useEffect(() => {
     // call api here
     setReviews(dummyReviews);
-
-    fetch('/app/testExtMedia', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-      });
 
     fetch(`/app/showInfo/tv/${id}`)
       .then(res => res.json())
@@ -58,10 +47,9 @@ const ShowPage = ({ openModal }) => {
     })
       .then(res => res.json())
       .then(shows => {
-        console.log(shows);
         let queued = false;
         for (let i = 0; i < shows.length; i++) {
-          if (shows[i].contentid === id && shows[i].watching === 'queued') {
+          if (shows[i].contentid === id) {
             console.log('success');
             queued = true;
             break;
