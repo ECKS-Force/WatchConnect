@@ -3,21 +3,22 @@ const db = require('../models/databaseModel');
 const contentController = {};
 
 contentController.getContentList = (req, res, next) => {
-  const query = 'SELECT contentID, mediaType FROM contentList'
-    +' WHERE username = $1';
-  const values = [req.body.username];
+  const query = 'SELECT * FROM contentLists' + ' WHERE username = $1';
+
+  const values = [];
+  if (req.body.username) values.push(req.body.username);
+  else values.push(req.cookies.username);
 
   db.query(query, values)
-  .then((result) => {
-    console.log('getContentList db query result: ', result)
-    res.locals.watchList = result.rows;
-    return next();
-  })
-  .catch((error) => {
-    console.log('getContentList ERROR: ', error);
-    return next(error);
-  })
-}
+    .then((result) => {
+      res.locals.watchList = result.rows;
+      return next();
+    })
+    .catch((error) => {
+      console.log('getContentList ERROR: ', error);
+      return next(error);
+    });
+};
 
 contentController.addMedia = (req, res, next) => {
   const { id, media, watching } = req.body;
