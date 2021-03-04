@@ -106,8 +106,6 @@ const FriendSearch = ({ friends, setFriends }) =>{
   const unfollow = (e) =>{
     setResults([]);
 
-    
-
     let unfollowUser = {friend: e.target.getAttribute('username')};
 
     //send fetch request to db to get remove user
