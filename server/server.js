@@ -19,9 +19,9 @@ app.use('/app', appRouter);
 
 app.use('/auth', authRouter);
 
-app.get('/', (req, res) => {
-    return res.status(200).sendFile(path.join(__dirname, '../index.html'));
-  });
+app.get('/*', (req, res) => {
+  return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
 
 app.use((err, req, res, next) => {
     const defaultErr = {
