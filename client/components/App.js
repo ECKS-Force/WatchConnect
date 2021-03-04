@@ -9,11 +9,15 @@ import Login from './Login';
 import WatchList from './WatchList';
 import ShowPage from './ShowPage';
 
+import FriendsList from './FriendsList';
+import FriendSearch from './FriendSearch';
+
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState(undefined);
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState(undefined);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     // check if logged in
@@ -34,6 +38,10 @@ function App() {
   const closeModal = () => {
     setShowModal(false);
   };
+
+  const setFriendState = (newValue) => {
+    setFriends(newValue);
+  }
 
   const renderModal = () => {
     switch(modal.type) {
@@ -72,7 +80,10 @@ function App() {
         <main>
           <Switch>
             <Route exact path="/">
-              <div>Home</div>
+              <div>
+                <FriendSearch friends={friends} setFriends={setFriendState}/>
+                <FriendsList friends={friends} setFriends={setFriendState}/>);
+              </div>
             </Route>
             <Route path="/my-list">
               <WatchList openModal={openModal} />

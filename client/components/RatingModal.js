@@ -38,6 +38,34 @@ const RatingModal = ({ show, closeModal }) => {
     setReview(e.target.value);
   };
 
+  const submitRating = () => {
+    fetch('/app/updateMedia', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id,
+        update: 'rating',
+        value: selectedStars
+      })
+    });
+
+    if (review.length) {
+      fetch('/app/updateMedia', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id,
+          update: 'review',
+          value: review
+        })
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,22 +75,22 @@ const RatingModal = ({ show, closeModal }) => {
     }
 
     // add show to watched
-    console.log('sending post');
-    fetch('/app/addMedia', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id,
-        media: 'tv',
-        watching: 'watched'
-      })
-    })
-      .then(res => {
-        console.log('show added');
-      });
+    // fetch('/app/addMedia', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     id,
+    //     media: 'tv',
+    //     watching: 'watched'
+    //   })
+    // })
+    //   .then(res => {
+    //     console.log('show added');
+    //   });
 
+    submitRating();
     closeModal();
   };
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const { getFriendsList, addFriend, deleteFriend, friendSearch } = require('../controllers/followerController.js');
-const { getContentList, addMedia, deleteMedia, updateMedia } = require('../controllers/contentController.js');
+const { getContentList, addMedia, deleteMedia, updateMedia, getExtendedContentList } = require('../controllers/contentController.js');
 const { showSearch, showInfo } = require('../controllers/apiController.js')
 
 const appRouter = express.Router();
@@ -59,5 +59,9 @@ appRouter.post('/deleteMedia', deleteMedia, (req, res) => {
 appRouter.post('/updateMedia', updateMedia, (req, res) => {
   return res.sendStatus(200);
 })
+
+appRouter.post('/getExtMedia', getExtendedContentList, (req, res) => {
+  return res.status(200).json(res.locals.shows);
+});
 
 module.exports = appRouter;

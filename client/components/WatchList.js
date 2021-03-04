@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 
 // dummy data
 // https://www.themoviedb.org/t/p/w220_and_h330_face/azL2ThbJMIkts3ZMt3j1YgBUeDB.jpg
@@ -59,16 +59,39 @@ const shows = {
 };
 
 const WatchList = ({ openModal }) => {
+  const [watching, setWatching] = useState([]);
+  const [queued, setQueued] = useState([]);
+
   useEffect(() => {
-    fetch('/app/content')
+    fetch('/app/content', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then(res => res.json())
-      .then(res => {
-        console.log(res);
+      .then(shows => {
+        const watchingArr = [];
+        const queuedArr = [];
+
+        shows.forEach(show => {
+          if (show.watching === 'watching') {
+            watchingArr.push(show);
+          } else if (show.watching === 'queued') {
+            const fetchPromise = fetch('/content')
+            queuedArr.push(fetchPromise);
+          }
+        });
+
+        Promise.all(queuedArr).then((values) => {
+          console.log('done');
+        });
+        // set state here
       });
   }, []);
 
-  const renderWatching = (showArr) => {
-    return showArr.map(show => <ShowIcon show={show} />);
+  const renderWatching = (showArr, watching) => {
+    return showArr.map(show => <ShowIcon show={show} watching={watching} openModal={openModal} />);
   };
 
   return (
@@ -78,7 +101,7 @@ const WatchList = ({ openModal }) => {
           <h2>Currently Watching</h2>
         </div>
         <div className="show-container">
-          {renderWatching(shows.watching)}
+          {renderWatching(shows.watching, 'watching')}
         </div>
       </section>
       <section className="queue">
@@ -86,25 +109,42 @@ const WatchList = ({ openModal }) => {
           <h2>My Queue</h2>
         </div>
         <div className="show-container">
-          {renderWatching(shows.upNext)}
+          {renderWatching(shows.upNext, 'queued')}
         </div>
       </section>
     </>
   );
 };
 
-const ShowIcon = ({ show }) => {
+const ShowIcon = ({ show, watching, openModal }) => {
+  const markWatched = () => {
+    openModal({
+      type: 'RATING',
+      show: {
+        contentid
+      }
+    });
+  };
+
   return (
     <div className="show-icon">
       <a href={`/shows/${show.id}`}>
         <img src={show.poster_path} />
       </a>
-      <div className="show-button-container">
-        <i class="fas fa-user"></i>
-        <button>Mark as Watched</button>
-        <button>Move to My Queue</button>
-        <button>Remove From List</button>
-      </div>
+      {watching === 'watching' ?
+        <div className="show-button-container">
+          <img
+            src="https://img.icons8.com/windows/32/ffffff/--checkmark-yes.png"
+            onClick={markWatched}
+          />
+          <img src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-down.png"/>
+        </div>
+        :
+        <div className="show-button-container">
+          <img src="https://img.icons8.com/windows/32/ffffff/--checkmark-yes.png"/>
+          <img src="https://img.icons8.com/pastel-glyph/32/ffffff/circled-up.png"/>
+        </div>
+      }
     </div>
   );
 }

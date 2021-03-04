@@ -118,6 +118,7 @@ main {
 }
 
 .show-button-container {
+  width: inherit;
   display: none;
   position: absolute;
   bottom: 0;
