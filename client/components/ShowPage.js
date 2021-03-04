@@ -241,6 +241,16 @@ const ShowPage = ({ openModal }) => {
     // call api here
     setShow(dummyShow);
     setReviews(dummyReviews);
+
+    console.log('test1');
+    fetch(`/app/showInfo/tv/${id}`)
+      .then(res => res.json())
+      .then(res => {
+        console.log('test2');
+        console.log(res);
+        setShow(res);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   const renderReviews = () => {
@@ -267,7 +277,7 @@ const ShowPage = ({ openModal }) => {
       <>
         <div className="show-page-header">
           <img
-            src={`https://www.themoviedb.org/t/p/original${show.poster_path}`}
+            src={`https://www.themoviedb.org/t/p/original${show.imgPath}`}
             className="show-page-poster"
           />
           <div>
@@ -275,7 +285,7 @@ const ShowPage = ({ openModal }) => {
             <h1>{show.name}</h1>
             <button onClick={addToQueue}>Add to Watch List</button>
             <button onClick={addRating}>Rate This Show</button>
-            <p>{show.overview}</p>
+            <p>{show.description}</p>
             <div className="rating-avg">
               <img src="https://img.icons8.com/material/24/000000/star--v1.png" />
               <div>

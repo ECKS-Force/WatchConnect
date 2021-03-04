@@ -63,16 +63,11 @@ const WatchList = ({ openModal }) => {
     return showArr.map(show => <ShowIcon show={show} />);
   };
 
-  const handleClick = () => {
-    openModal('ADD_SHOW');
-  };
-
   return (
     <>
       <section className="watching">
         <div className="watch-list-header">
           <h2>Currently Watching</h2>
-          <div className="add-button" onClick={handleClick}>+</div>
         </div>
         <div className="show-container">
           {renderWatching(shows.watching)}
@@ -81,7 +76,6 @@ const WatchList = ({ openModal }) => {
       <section className="queue">
         <div className="watch-list-header">
           <h2>My Queue</h2>
-          <div className="add-button" onClick={handleClick}>+</div>
         </div>
         <div className="show-container">
           {renderWatching(shows.upNext)}

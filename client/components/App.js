@@ -1,18 +1,30 @@
-import React, { Fragment, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import '../../build/style.css';
 
-import AddShowModal from './AddShowModal';
 import RatingModal from './RatingModal';
 
-import NavBar from './NavBar';
+import Navbar from './Navbar';
+import Login from './Login';
 import WatchList from './WatchList';
 import ShowPage from './ShowPage';
 
 function App() {
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState(undefined);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState(undefined);
+
+  useEffect(() => {
+    // check if logged in
+    const sessionCookie = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('session='));
+    
+    if (sessionCookie && sessionCookie.split('=')[1] === 'true') {
+      setLoggedIn(true);
+    }
+  }, [loggedIn]);
 
   const openModal = (modalObj) => {
     setModal(modalObj);
@@ -25,8 +37,6 @@ function App() {
 
   const renderModal = () => {
     switch(modal.type) {
-      case 'ADD_SHOW':
-        return <AddShowModal />;
       case 'RATING':
         return <RatingModal
           show={modal.show}
@@ -35,33 +45,46 @@ function App() {
     }
   };
 
-	return (
-    <>
-      {showModal &&
-        <div className="modal-container">
-          <div className="modal-bg" onClick={() => { setShowModal(false) }}></div>
-          {renderModal()}
-        </div>
-      }
-      <NavBar />
-      <main>
-        <Switch>
-          <Route exact path="/">
-            {isLoggedIn ?
-              <div>Logged In</div> :
-              <div>Not Logged In</div>
-            }
-          </Route>
-          <Route path="/my-list">
-            <WatchList openModal={openModal} />
-          </Route>
-          <Route path="/shows/:id">
-            <ShowPage openModal={openModal} />
-          </Route>
-        </Switch>
-      </main>
-    </>
-  );
+  if (!loggedIn) {
+    return (
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/signup">
+          <div>Sign up</div>
+        </Route>
+        {/* <Route path="/">
+          <Redirect to="/login" />
+        </Route> */}
+      </Switch>
+    );
+  } else {
+    return (
+      <>
+        {showModal &&
+          <div className="modal-container">
+            <div className="modal-bg" onClick={() => { setShowModal(false) }}></div>
+            {renderModal()}
+          </div>
+        }
+        <Navbar />
+        <main>
+          <Switch>
+            <Route exact path="/">
+              <div>Home</div>
+            </Route>
+            <Route path="/my-list">
+              <WatchList openModal={openModal} />
+            </Route>
+            <Route path="/shows/:id">
+              <ShowPage openModal={openModal} />
+            </Route>
+          </Switch>
+        </main>
+      </>
+    );
+  }
 }
 
 export default App;

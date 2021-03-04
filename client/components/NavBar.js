@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const NavBar = () => {
+const Navbar = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchCache, setSearchCache] = useState({});
   const [options, setOptions] = useState([]);
@@ -27,10 +27,11 @@ const NavBar = () => {
     if (searchCache[inputVal]) {
       setOptions(searchCache[inputVal]);
     } else {
-      fetch(`https://api.themoviedb.org/3/search/tv?api_key=7aa2b16005c07560a7d963bc9f6982dc&language=en-US&include_adult=false&query=${e.target.value}`)
+      fetch(`/app/showsearch/${e.target.value}`)
         .then(res => res.json())
         .then(res => {
-          const showOptions = res.results.slice(0, 8);
+          console.log(res);
+          const showOptions = res.slice(0, 8);
           setOptions(showOptions);
           
           setSearchCache({
@@ -51,10 +52,6 @@ const NavBar = () => {
           <Link to="/my-list">My Shows</Link>
         </li>
       </ul>
-      {/* <form>
-        <input type="text" />
-        <input type="submit" value="Search" />
-      </form> */}
       <form onSubmit={handleSubmit}>
         <input
           list="shows"
@@ -77,4 +74,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;

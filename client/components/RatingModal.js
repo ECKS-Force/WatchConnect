@@ -13,7 +13,7 @@ const RatingModal = ({ show, closeModal }) => {
       const starVersion = index + 1 <= numStars ? 1 : 2;
 
       return <img
-        src={`https://img.icons8.com/material/52/000000/star--v${starVersion}.png`}
+        src={`https://img.icons8.com/material/40/000000/star--v${starVersion}.png`}
         data-idx={index}
         onMouseEnter={handleHover}
         onClick={handleClick}

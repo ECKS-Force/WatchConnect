@@ -1,6 +1,6 @@
 :root {
   --accent-color: #44BB6E;
-  --poster-border-radius: 4px;
+  --poster-border-radius: 3px;
   --border-color: rgb(153, 153, 153);
 }
 
@@ -251,4 +251,15 @@ input, textarea {
 
 .review p {
   margin-bottom: 0;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 400px;
+}
+
+.login input {
+  height: 40px;
 }
